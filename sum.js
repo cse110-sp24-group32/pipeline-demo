@@ -1,5 +1,11 @@
+/**
+ * 
+ * @param {Number} a - first operand
+ * @param {Number} b - second operand
+ * @returns the sum
+ */
 function sum(a, b) {
   return a + b;
 }
 
-module.exports = sum;
+export {sum};

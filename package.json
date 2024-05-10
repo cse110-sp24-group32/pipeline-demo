@@ -8,6 +8,15 @@
     "stylelint-config-standard": "^36.0.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "type": "module",
+  "jest": {
+    "transform": {},
+    "verbose": true
+  },
+  "dependencies": {
+    "eslint-plugin-jest": "^28.5.0",
+    "jsdoc": "^4.0.3"
   }
 }
