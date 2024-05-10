@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "title": "Attend CSE 110",
+      "content": "I need to go to lecture really badly so I don't miss attendance points",
+      "started": false,
+      "checkbox": true,
+      "deadline": "2024-04-25"
+    },
+    {
+      "title": "Go to CSE 110 office hours",
+      "content": "So that I know what I'm doing!",
+      "started": false,
+      "checkbox": false,
+      "deadline": "2024-04-25"
+    },
+    {
+      "title": "Attend group 32 meeting",
+      "content": "I need to make some user stories before this..",
+      "started": false,
+      "checkbox": true,
+      "deadline": "2024-04-25"
+    },
+    {
+      "title": "Finish lab 4",
+      "content": "JavaScript is kinda hard..",
+      "started": false,
+      "checkbox": false,
+      "deadline": "2024-04-25"
+    },
+    {
+      "title": "Start CSE 130 homework",
+      "content": "learn what tail recursion is..",
+      "started": true,
+      "checkbox": false,
+      "deadline": "2024-04-25"
+    },
+    {
+      "title": "Study for math 183 exam",
+      "content": "I really need to start this.. do the old exams!",
+      "started": false,
+      "checkbox": false,
+      "deadline": "2024-04-25"
+    },
+    {
+      "title": "Pick new room",
+      "content": "At 11:20 i need to pick housing for next year",
+      "started": false,
+      "checkbox": false,
+      "deadline": "2024-04-25"
+    },
+    {
+      "title": "Submit warmup project",
+      "content": "Hopefully our TA and prof likes it!",
+      "started": false,
+      "checkbox": false,
+      "deadline": "2024-04-25"
+    }
+  ]
+}

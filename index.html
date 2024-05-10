@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link rel="stylesheet" href="task.css">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="taskFunctionality.js"></script>
+    </head>
+    <body>
+      
+        <div id="task-list">
+          <header id="taskHeader">
+
+            <div id="headerLogo">
+            <img src="radio-icon.png" id="radio-icon"><h1 style="display:inline; padding-left: 0.5vw;">Task List</h1>
+           </div>
+
+           <input id="read_json" type="button" value="Populate With Examples" onclick="readTextFile('tasks.json');" />
+           <input id="clear-tasks" type="button" value="Clear Tasks" onclick="clearTasks();" />
+
+           <div id="headerDate">
+            4/24/2024
+           </div>
+
+          </header>
+
+
+          <!-- TASK CONTAINER: append new tasks here -->
+          <div id="create-task-container">
+            <span class="create-title">Task Description + Title</span>
+            <input type="text" id="create-title" class="new-text" placeholder="title"> </input>
+            <input type="text" id="create-desc" class="new-text" placeholder="description"> </input>
+            <input type="date" id="create-deadline" class="new-text"> </input>
+            <button type="click" id="create-button" onclick="addTask(this)">Create Task</button>
+          </div>
+          <div id="task-container">
+            
+          </div>
+
+          <!-- END TASK CONTAINER -->
+
+        </div>
+          <img src="logo.png" style="display: block; margin:auto; width:50%;">
+
+
+    </body>
+</html>
