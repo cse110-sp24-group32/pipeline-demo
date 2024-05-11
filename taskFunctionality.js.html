@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: taskFunctionality.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: taskFunctionality.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** Replaces date with today's date */
+window.onload = function () {
+  // today
+  const today = new Date()
+
+  // format the date as MM/DD/YYYY
+  const formattedDate = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear()
+
+  // update the content of the div with id headerDate
+  document.getElementById('headerDate').innerText = formattedDate
+
+  customElements.define('task-elem', TaskElement)
+
+  if (localStorage.getItem('tasks') == null) {
+    localStorage.setItem('tasks', '{}')
+  }
+
+  for (const id in JSON.parse(localStorage.getItem('tasks'))) {
+    addTaskElement(id)
+  }
+
+  document.getElementsByTagName('html')[0].style.visibility = 'visible'
+}
+
+function addTaskElement (id) {
+  const el = document.createElement('task-elem')
+  el.setAttribute('id', id)
+  document.getElementById('task-container').append(el)
+}
+
+function addTask () {
+  const title = document.getElementById('create-title').value
+  const desc = document.getElementById('create-desc').value
+  const deadline = document.getElementById('create-deadline').value
+  // console.log("adding " + title + " " + desc)
+  const tasks = JSON.parse(localStorage.getItem('tasks'))
+  const data = {}
+  data.title = title
+  data.content = desc
+  data.started = false
+  data.checkbox = false
+  data.deadline = deadline || 'No deadline'
+  const id = Date.now().toString()
+  tasks[id] = data
+  localStorage.setItem('tasks', JSON.stringify(tasks))
+
+  addTaskElement(id)
+}
+class TaskElement extends HTMLElement {
+  constructor () {
+    super()
+  }
+
+  connectedCallback () {
+    const id = this.getAttribute('id')
+    const data = JSON.parse(localStorage.getItem('tasks'))[id]
+    // console.log(data);
+    // console.log("at " + id);
+    this.innerHTML = `
+        &lt;div class="task">
+            
+                &lt;div class="container">
+                    &lt;span class="deadline">Deadline: ${data.deadline} &lt;/span>
+                    &lt;div class="title-container">
+                    &lt;!-- TASK TITLE -->
+
+                    &lt;span class="task-title">${data.title}&lt;/span> 
+                    &lt;br>
+                    &lt;label>
+                        &lt;input type="checkbox" class="task-checkbox-wip" onclick="checkboxSwitch(this)"/>
+                        &lt;span class="arrow">&amp;rarr;&lt;/span>
+                        &lt;input type="checkbox" class="task-checkbox-done" onclick="checkboxSwitch(this)"/>
+                            &lt;span class="go-left checkTitle">START&lt;/span>
+                                
+                            &lt;span class="go-right checkTitle">DONE&lt;/span>
+                    &lt;/label>
+                    &lt;/div>
+
+                    &lt;!-- OPEN DESCRIPTION BUTTON -->
+                    &lt;button type="click" class="task-open" onclick="viewTask(this)">
+                        View Task Description
+                    &lt;/button>
+
+            &lt;!-- HIDDEN CONTENT (SHOW THIS ON BUTTON CLICK)-->
+            &lt;p class="task-description">
+            ${data.content}
+            &lt;/p> 
+          &lt;/div>
+        &lt;/div>`
+    this.querySelector('.task-checkbox-wip').checked = data.started
+    this.querySelector('.task-checkbox-done').checked = data.checkbox
+  }
+}
+
+function checkboxSwitch (checkBox) {
+  // console.log(checkBox.parentElement);
+  // initially checks if the calling element is the start checkbox
+  if (checkBox.getAttribute('class') == 'task-checkbox-wip') {
+    const finishCheck = checkBox.parentElement.querySelector('.task-checkbox-done')
+    var checkStatus = finishCheck.checked
+
+    if (checkBox.checked &amp;&amp; checkStatus) {
+      finishCheck.checked = false
+    }
+  } else {
+    const startCheck = checkBox.parentElement.querySelector('.task-checkbox-wip')
+    var checkStatus = startCheck.checked
+
+    if (checkBox.checked &amp;&amp; checkStatus) {
+      startCheck.checked = false
+    }
+  }
+
+  // directly update bools from new state
+  // the above logic can be simplified though
+  const id = checkBox.closest('task-elem').getAttribute('id')
+  const tasks = JSON.parse(localStorage.getItem('tasks'))
+  // console.log("bruh ", tasks, id);
+  const data = tasks[id]
+  data.started = checkBox.parentElement.querySelector('.task-checkbox-wip').checked
+  data.checkbox = checkBox.parentElement.querySelector('.task-checkbox-done').checked
+  tasks[id] = data
+  localStorage.setItem('tasks', JSON.stringify(tasks))
+}
+
+/** Function that open/close task description */
+function viewTask (button) {
+  const description = button.parentElement.querySelector('.task-description')
+  if (button.innerText == 'View Task Description') {
+    description.style.display = 'block'
+    button.innerText = 'Close Task Description'
+  } else {
+    button.innerText = 'View Task Description'
+    description.style.display = 'none'
+  }
+}
+
+/** Reads from JSON file and populate task container */
+function readTextFile (file) {
+  const json_input = new XMLHttpRequest()
+  json_input.overrideMimeType('application/json')
+  json_input.open('GET', file, true)
+  json_input.onreadystatechange = function () {
+    if (json_input.readyState === 4 &amp;&amp; json_input.status == '200') {
+      let data = JSON.parse(json_input.responseText)
+      data = data.tasks
+
+      const task_container = document.getElementById('task-container')
+      // task_container.innerHTML = ``;
+
+      for (let i = 0; i &lt; data.length; i++) {
+        const tasks = JSON.parse(localStorage.getItem('tasks'))
+        const taskdata = {}
+        taskdata.title = data[i].title
+        taskdata.content = data[i].content
+        taskdata.started = data[i].started
+        taskdata.checkbox = data[i].checkbox
+        taskdata.deadline = data[i].deadline
+        const id = Date.now().toString() + i
+        tasks[id] = taskdata
+        localStorage.setItem('tasks', JSON.stringify(tasks))
+
+        const el = document.createElement('task-elem')
+        el.setAttribute('id', id)
+        document.getElementById('task-container').append(el)
+      }
+    }
+  }
+  json_input.send(null)
+}
+
+function clearTasks () {
+  localStorage.setItem('tasks', '{}')
+  const task_container = document.getElementById('task-container')
+  task_container.innerHTML = ''
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#readTextFile">readTextFile</a></li><li><a href="global.html#sum">sum</a></li><li><a href="global.html#test">test</a></li><li><a href="global.html#viewTask">viewTask</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat May 11 2024 00:41:59 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
