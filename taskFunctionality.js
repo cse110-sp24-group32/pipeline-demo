@@ -18,7 +18,7 @@ window.onload = function () {
   for (const id in JSON.parse(localStorage.getItem('tasks'))) {
     addTaskElement(id)
   }
-
+// amogus
   document.getElementsByTagName('html')[0].style.visibility = 'visible'
 }
 
