@@ -1,4 +1,4 @@
-name: JS Standard
+name: Linter and style
 on: push
 jobs:
   build:
