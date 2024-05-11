@@ -1,4 +1,7 @@
 /** Replaces date with today's date */
+const customElements = window.customElements
+const localStorage = window.localStorage
+
 window.onload = function () {
   // today
   const today = new Date()
@@ -20,6 +23,10 @@ window.onload = function () {
   }
 
   document.getElementsByTagName('html')[0].style.visibility = 'visible'
+
+  document.querySelector('#clear-tasks').addEventListener('click', clearTasks)
+  document.querySelector('#read_json').addEventListener('click', readTextFile('tasks.json'))
+  document.querySelector('#create-button').addEventListener('click', addTask(this))
 }
 
 function addTaskElement (id) {
@@ -46,11 +53,7 @@ function addTask () {
 
   addTaskElement(id)
 }
-class TaskElement extends HTMLElement {
-  constructor () {
-    super()
-  }
-
+class TaskElement extends window.HTMLElement {
   connectedCallback () {
     const id = this.getAttribute('id')
     const data = JSON.parse(localStorage.getItem('tasks'))[id]
@@ -92,19 +95,19 @@ class TaskElement extends HTMLElement {
   }
 }
 
-function checkboxSwitch (checkBox) {
+function checkboxSwitch (checkBox) { // eslint-disable-line no-unused-vars
   // console.log(checkBox.parentElement);
   // initially checks if the calling element is the start checkbox
-  if (checkBox.getAttribute('class') == 'task-checkbox-wip') {
+  if (checkBox.getAttribute('class') === 'task-checkbox-wip') {
     const finishCheck = checkBox.parentElement.querySelector('.task-checkbox-done')
-    var checkStatus = finishCheck.checked
+    const checkStatus = finishCheck.checked
 
     if (checkBox.checked && checkStatus) {
       finishCheck.checked = false
     }
   } else {
     const startCheck = checkBox.parentElement.querySelector('.task-checkbox-wip')
-    var checkStatus = startCheck.checked
+    const checkStatus = startCheck.checked
 
     if (checkBox.checked && checkStatus) {
       startCheck.checked = false
@@ -124,9 +127,9 @@ function checkboxSwitch (checkBox) {
 }
 
 /** Function that open/close task description */
-function viewTask (button) {
+function viewTask (button) { // eslint-disable-line no-unused-vars
   const description = button.parentElement.querySelector('.task-description')
-  if (button.innerText == 'View Task Description') {
+  if (button.innerText === 'View Task Description') {
     description.style.display = 'block'
     button.innerText = 'Close Task Description'
   } else {
@@ -137,15 +140,14 @@ function viewTask (button) {
 
 /** Reads from JSON file and populate task container */
 function readTextFile (file) {
-  const json_input = new XMLHttpRequest()
-  json_input.overrideMimeType('application/json')
-  json_input.open('GET', file, true)
-  json_input.onreadystatechange = function () {
-    if (json_input.readyState === 4 && json_input.status == '200') {
-      let data = JSON.parse(json_input.responseText)
+  const jsonInput = new window.XMLHttpRequest()
+  jsonInput.overrideMimeType('application/json')
+  jsonInput.open('GET', file, true)
+  jsonInput.onreadystatechange = function () {
+    if (jsonInput.readyState === 4 && jsonInput.status === '200') {
+      let data = JSON.parse(jsonInput.responseText)
       data = data.tasks
 
-      const task_container = document.getElementById('task-container')
       // task_container.innerHTML = ``;
 
       for (let i = 0; i < data.length; i++) {
@@ -166,11 +168,11 @@ function readTextFile (file) {
       }
     }
   }
-  json_input.send(null)
+  jsonInput.send(null)
 }
 
 function clearTasks () {
   localStorage.setItem('tasks', '{}')
-  const task_container = document.getElementById('task-container')
-  task_container.innerHTML = ''
+  const taskContainer = document.getElementById('task-container')
+  taskContainer.innerHTML = ''
 }
