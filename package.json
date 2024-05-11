@@ -18,6 +18,9 @@
     "jsdoc": "^4.0.3"
   },
   "standard": {
-    "env": [ "jest" ]
+    "env": [ "jest" ],
+    "ignore": [
+    "out/**/*.js"
+     ]
   }
 }
