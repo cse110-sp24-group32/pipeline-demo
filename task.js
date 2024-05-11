@@ -1,9 +1,9 @@
 class Task extends HTMLElement {
-  constructor() {
-    super();
+  constructor () {
+    super()
   }
 
-  connectedCallback() {
+  connectedCallback () {
     const title = this.getAttribute('title')
     const content = this.getAttribute('content')
     const start_id = this.getAttribute('start_id')
@@ -44,4 +44,4 @@ class Task extends HTMLElement {
   }
 }
 
-customElements.define('task-component', Task);
+customElements.define('task-component', Task)
